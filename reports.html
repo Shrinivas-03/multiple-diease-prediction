@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Reports - SanjeevaniAI</title>
+    <style>
+        .reports-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .download-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <div class="reports-container">
+        <h2>Your Health Reports</h2>
+        <div id="reportsList"></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script>
+        function loadReports() {
+            const currentUser = checkAuth();
+            if (!currentUser) return;
+
+            const lastAssessment = JSON.parse(sessionStorage.getItem('lastAssessment'));
+            if (lastAssessment) {
+                const reportsList = document.getElementById('reportsList');
+                reportsList.innerHTML = `
+                    <div class="report-card">
+                        <h3>Health Assessment Report</h3>
+                        <p>Date: ${new Date(lastAssessment.date).toLocaleDateString()}</p>
+                        <p>Height: ${lastAssessment.height} cm</p>
+                        <p>Weight: ${lastAssessment.weight} kg</p>
+                        <p>Blood Group: ${lastAssessment.bloodGroup}</p>
+                        <p>Symptoms: ${lastAssessment.symptoms}</p>
+                        <button class="download-btn" onclick="downloadReport(1)">
+                            Download Report
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function downloadReport(reportId) {
+            // Add download logic here
+            console.log('Downloading report:', reportId);
+        }
+
+        $(document).ready(function() {
+            updateNavbar();
+            loadReports();
+        });
+    </script>
+</body>
+</html>

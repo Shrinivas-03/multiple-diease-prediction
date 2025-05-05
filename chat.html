@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI - SanjeevaniAI</title>
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 40px auto;
+            height: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+
+        .user-message {
+            background: #2c6fb0;
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-message {
+            background: #f0f0f0;
+            margin-right: auto;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/common.js"></script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script>
+        $(document).ready(function() {
+            const user = checkAuth();
+            if (user) {
+                updateNavbar();
+                const lastAssessment = JSON.parse(sessionStorage.getItem('lastAssessment'));
+                if (lastAssessment) {
+                    addMessage("How can I help you with your symptoms today?", "ai-message");
+                }
+            }
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (message) {
+                addMessage(message, 'user-message');
+                // Dummy AI response
+                setTimeout(() => {
+                    addMessage("I understand your concern. Based on your symptoms, I recommend consulting with a healthcare professional. In the meantime, you can try the suggested remedies from your assessment.", "ai-message");
+                }, 1000);
+                input.value = '';
+            }
+        }
+
+        function addMessage(text, className) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.textContent = text;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
